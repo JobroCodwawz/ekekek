@@ -20,6 +20,8 @@ const cooldown:float = 0.75
 var time_since_shoot:float = cooldown
 var crouched:bool = false
 
+var walking:bool = false
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -30,6 +32,22 @@ func _ready():
 	bomb_scene = preload("res://bomb.tscn")
 
 func _physics_process(delta):
+	
+	if velocity.x == 0 and not get_dir():
+		walking = false
+	
+	
+	if not walking:
+		$AnimatedSprite2D.animation = "default"
+	else:
+		$AnimatedSprite2D.animation = "walk"
+		
+	if velocity.y < 0:
+		$AnimatedSprite2D.animation = "jump"
+	elif velocity.y > 0:
+		$AnimatedSprite2D.animation = "fall"
+	
+	
 	time_since_shoot += delta
 	# Add the gravity.
 	
@@ -70,11 +88,12 @@ func horizontal_move(delta):
 	if direction and velocity.x == 0 and is_on_floor():
 		if direction != last_direction:
 			last_direction = direction
-			$Sprite2D.flip_h = !$Sprite2D.flip_h
+			$AnimatedSprite2D.flip_h = !$AnimatedSprite2D.flip_h
 			$Colliders.flip()
 			start_delay()
 		elif delay_finished() and not $Colliders.front_block:
 			velocity.x = direction * SPEED
+			walking = true
 			uncrouch()
 		
 	else:
@@ -143,12 +162,12 @@ func shoot():
 func crouch():
 	crouched = true
 	$CollisionShape2D.scale.y = 0.5
-	$Sprite2D.scale.y = 0.5
+	$AnimatedSprite2D.scale.y = 0.5
 	
 func uncrouch():
 	crouched = false
 	$CollisionShape2D.scale.y = 1
-	$Sprite2D.scale.y = 1
+	$AnimatedSprite2D.scale.y = 1
 	
 	
 func place_bomb():
