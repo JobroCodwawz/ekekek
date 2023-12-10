@@ -3,6 +3,7 @@ extends Node2D
 var front_block:bool = false
 var above_block:bool = false
 var below_block:bool = false
+var above_head:bool = false
 
 func _ready():
 	front_block = $FrontCollider.get_overlapping_bodies().size() != 0
@@ -10,13 +11,13 @@ func _ready():
 	below_block = $BelowCollider.get_overlapping_bodies().size() != 0
 	
 func normal_jump():
-	return (below_block and not(front_block)) or (front_block and above_block)
+	return (below_block and not(front_block)) or (front_block and above_block) or above_head
 	
 func jump_up():
-	return front_block and !above_block
+	return front_block and !above_block and not above_head
 	
 func jump_over():
-	return !(front_block or above_block or below_block)
+	return !(front_block or above_block or below_block) and not above_head
 
 
 func flip():
@@ -40,3 +41,9 @@ func _on_above_collider_body_exited(body):
 
 func _on_below_collider_body_exited(body):
 	below_block = false
+
+func _on_above_head_collider_body_entered(body):
+	above_head = true
+
+func _on_above_head_collider_body_exited(body):
+	above_head = false
