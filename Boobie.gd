@@ -13,23 +13,34 @@ var jumping_up:bool = false
 signal clearance_height
 var y
 
+var projectile_scene:PackedScene
+var bomb_scene:PackedScene
+
+const cooldown:float = 0.75
+var time_since_shoot:float = cooldown
+var crouched:bool = false
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():
 	clearance_height.connect(Callable(self, "jump_up"))
 	y = global_position.y
+	projectile_scene = preload("res://projectile.tscn")
+	bomb_scene = preload("res://bomb.tscn")
 
 func _physics_process(delta):
-	
+	time_since_shoot += delta
 	# Add the gravity.
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
+		velocity.y = clamp(velocity.y, JUMP_VELOCITY, -JUMP_VELOCITY)
+		
 		if velocity.y < 0 and y - global_position.y >= TILE_SIZE:
 			emit_signal("clearance_height")
 
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and velocity.x == 0:
+	if Input.is_action_just_pressed("ui_up") and is_on_floor() and velocity.x == 0:
 		var dir = get_dir()
 		if !dir:
 			y = global_position.y
@@ -38,6 +49,16 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	horizontal_move(delta)
+	
+	if Input.is_action_just_pressed("ui_accept") and time_since_shoot > cooldown:
+		shoot()
+		time_since_shoot = 0
+		
+	if Input.is_action_just_pressed("ui_down") and is_on_floor() and velocity.x == 0:
+		crouch()
+		
+	if Input.is_action_just_pressed("bomb"):
+		place_bomb()
 
 	move_and_slide()
 	
@@ -54,6 +75,7 @@ func horizontal_move(delta):
 			start_delay()
 		elif delay_finished() and not $Colliders.front_block:
 			velocity.x = direction * SPEED
+			uncrouch()
 		
 	else:
 		snap_movement()
@@ -81,6 +103,10 @@ func get_dir():
 	return direction
 
 func jump():
+	if crouched:
+		uncrouch()
+		return
+	
 	print($Colliders.normal_jump(), ", ", $Colliders.jump_up())
 	
 	if $Colliders.normal_jump():
@@ -108,3 +134,32 @@ func get_target(pos):
 	else: target_pos = int(floor(pos / TILE_SIZE))*TILE_SIZE
 	
 	
+func shoot():
+	var proj = projectile_scene.instantiate()
+	proj.set_dir(last_direction)
+	proj.player = self
+	add_child(proj)
+
+func crouch():
+	crouched = true
+	$CollisionShape2D.scale.y = 0.5
+	$Sprite2D.scale.y = 0.5
+	
+func uncrouch():
+	crouched = false
+	$CollisionShape2D.scale.y = 1
+	$Sprite2D.scale.y = 1
+	
+	
+func place_bomb():
+	if not crouched: return
+	var bomb = bomb_scene.instantiate()
+	bomb.global_position.y = global_position.y
+	bomb.global_position.x = global_position.x
+	get_parent().add_child(bomb)
+	
+func damage(amount):
+	print("owie: ", amount)
+
+
+

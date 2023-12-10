@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bklnqjqexdx4a"]
+
+[ext_resource type="Texture2D" uid="uid://cydsxdnn1rkvv" path="res://Pixel_Adventure_1/Free/Traps/Spiked Ball/Spiked Ball.png" id="1_2kmmf"]
+[ext_resource type="Script" path="res://player_projectile.gd" id="1_6gord"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pcs1i"]
+radius = 4.0
+
+[node name="Projectile" type="Area2D" groups=["projectiles"]]
+script = ExtResource("1_6gord")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pcs1i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(1.19209e-07, 0)
+scale = Vector2(0.366071, 0.366071)
+texture = ExtResource("1_2kmmf")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
