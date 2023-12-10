@@ -10,7 +10,7 @@ func _ready():
 	below_block = $BelowCollider.get_overlapping_bodies().size() != 0
 	
 func normal_jump():
-	return (below_block and not(front_block or above_block)) or (front_block and above_block)
+	return (below_block and not(front_block)) or (front_block and above_block)
 	
 func jump_up():
 	return front_block and !above_block
