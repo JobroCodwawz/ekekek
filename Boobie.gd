@@ -22,6 +22,9 @@ var crouched:bool = false
 
 var walking:bool = false
 
+var jump_queue_time = 10
+var jump_queue_countdown = 0
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -32,6 +35,7 @@ func _ready():
 	bomb_scene = preload("res://bomb.tscn")
 
 func _physics_process(delta):
+	jump_queue_countdown -= 1
 	
 	if velocity.x == 0 and not get_dir():
 		walking = false
@@ -57,18 +61,25 @@ func _physics_process(delta):
 		
 		if velocity.y < 0 and y - global_position.y >= TILE_SIZE:
 			emit_signal("clearance_height")
-
-	if Input.is_action_just_pressed("ui_up") and is_on_floor() and velocity.x == 0:
-		var dir = get_dir()
-		if !dir:
-			y = global_position.y
-			jump()
+	
+	var dir = get_dir()
+	if Input.is_action_just_pressed("ui_up") and is_on_floor() and velocity.x == 0 and !dir:
+		y = global_position.y
+		jump()
+	elif Input.is_action_just_pressed("ui_up"):
+		jump_queue_countdown = jump_queue_time
+	elif is_on_floor() and velocity.x == 0 and !dir and jump_queue_countdown > 0:
+		print("QUEUED JUMP")
+		y = global_position.y
+		jump()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	horizontal_move(delta)
 	
-	if Input.is_action_just_pressed("ui_accept") and time_since_shoot > cooldown:
+	
+	
+	if Input.is_action_pressed("ui_accept") and time_since_shoot > cooldown:
 		shoot()
 		time_since_shoot = 0
 		
@@ -157,7 +168,8 @@ func shoot():
 	var proj = projectile_scene.instantiate()
 	proj.set_dir(last_direction)
 	proj.player = self
-	add_child(proj)
+	proj.global_position = global_position
+	get_parent().add_child(proj)
 
 func crouch():
 	crouched = true
