@@ -48,7 +48,7 @@ func _ready():
 func _physics_process(delta):
 	if in_jump and velocity.x == 0 and velocity.y == 0:
 		in_jump = false
-		if $Colliders.is_ladder($Colliders/HeadCollider.global_position):
+		if $Colliders.is_ladder($CrouchCollider.global_position) and not $Colliders.is_one_way($Colliders/FootCollider.get_child(0).global_position, true):
 			print("from jump")
 			on_ladder = true
 
@@ -128,10 +128,10 @@ func _physics_process(delta):
 	
 func climb(dir):
 	var direction = vert_dir()
+	if get_dir(): return
+	
 	if dir != 0:
 		direction = dir
-		
-	
 		
 	if direction and not climbing:
 		if (not $Colliders.is_ladder($Colliders/HeadCollider.get_child(0).global_position) and dir == 0) or not $Colliders.is_ladder($Colliders/FootCollider.get_child(0).global_position):
@@ -188,14 +188,15 @@ func horizontal_move(delta):
 
 func snap_movement():
 	if velocity.x != 0:
-			if not snapping:
-				get_target(global_position.x, last_direction)
-				snapping = true
-			elif snapping and abs(global_position.x - target_pos) < 4:
-				global_position.x = target_pos
-				velocity.x = 0
-				snapping = false
-				print(target_pos, ", ", global_position.x)
+		#print(target_pos, ", ", global_position.x, " ", snapping)
+		if not snapping:
+			get_target(global_position.x, last_direction)
+			snapping = true
+		elif snapping and abs(global_position.x - target_pos) < 4:
+			global_position.x = target_pos
+			velocity.x = 0
+			snapping = false
+			print(target_pos, ", ", global_position.x)
 
 func start_delay():
 	running_delay = 0
