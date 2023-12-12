@@ -127,8 +127,11 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func climb(dir):
+	
 	var direction = vert_dir()
-	if get_dir(): return
+	if get_dir(): 
+		snap_climb()
+		return
 	
 	if dir != 0:
 		direction = dir
@@ -150,7 +153,6 @@ func climb(dir):
 		snap_climb()
 		
 func snap_climb():
-	
 	if velocity.y != 0 and climbing:
 		if not climb_snapping:
 			get_target(y_pos, last_climb_dir)
