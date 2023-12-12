@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj1tlygncgll1"]
+
+[ext_resource type="Texture2D" uid="uid://eb8qcxpwy0l0" path="res://Pixel_Adventure_1/Free/Traps/Blocks/Idle.png" id="1_cjy66"]
+
+[node name="MoveSprite" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_cjy66")
+offset = Vector2(8, 8)
