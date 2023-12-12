@@ -48,6 +48,7 @@ func _ready():
 func _physics_process(delta):
 	if in_jump and velocity.x == 0 and velocity.y == 0:
 		in_jump = false
+		toggleCollider()
 		if $Colliders.is_ladder($CrouchCollider.global_position) and not ($Colliders.is_one_way($Colliders/FootCollider.get_child(0).global_position, true) and not $Colliders.is_ladder($Colliders/FootCollider.get_child(0).global_position)):
 			print("from jump")
 			on_ladder = true
@@ -190,6 +191,7 @@ func horizontal_move(delta):
 
 func snap_movement():
 	if velocity.x != 0:
+		#print(target_pos, ", ", global_position.x)
 		#print(target_pos, ", ", global_position.x, " ", snapping)
 		if not snapping:
 			get_target(global_position.x, last_direction)
@@ -229,20 +231,26 @@ func jump():
 	
 	if not on_ladder:
 		in_jump = true
+		toggleCollider()
 		
 	print($Colliders.normal_jump(), ", ", $Colliders.jump_up())
 	
+	
 	if $Colliders.normal_jump():
 		velocity.y = JUMP_VELOCITY
-	elif $Colliders.jump_up():
-		jumping_up = true
-		velocity.y = JUMP_VELOCITY
 	elif $Colliders.jump_over():
+		print("what")
 		velocity.y = JUMP_VELOCITY
 		velocity.x = last_direction * SPEED
 		global_position.x += last_direction
 		snapping = true
 		get_target(global_position.x + last_direction*TILE_SIZE, last_direction)
+		print("target: ", target_pos)
+	elif $Colliders.jump_up():
+		print("wtf why")
+		jumping_up = true
+		velocity.y = JUMP_VELOCITY
+	
 	
 func jump_up():
 	if jumping_up:
@@ -277,8 +285,9 @@ func crouch():
 		global_position.y += 1
 	
 func toggleCollider():
-	$FullCollider.disabled = !$FullCollider.disabled
 	$CrouchCollider.disabled = !$CrouchCollider.disabled
+	$FullCollider.disabled = !$FullCollider.disabled
+	
 
 	
 func uncrouch():
@@ -299,4 +308,7 @@ func damage(amount):
 	print("owie: ", amount)
 
 
-
+func _on_front_collider_body_entered(body):
+	if in_jump and not $Colliders.can_move():
+		get_target(global_position.x, last_direction)
+		snapping = true
