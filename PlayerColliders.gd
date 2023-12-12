@@ -32,7 +32,7 @@ func is_one_way(pos, blockcheck):
 		return false
 	
 	var tile = get_tile_data(pos)
-	return tile.is_collision_polygon_one_way(0,0)
+	return tile.is_collision_polygon_one_way(1,0)
 	
 func is_ladder(pos):
 	var tile = get_tile_data(pos)
