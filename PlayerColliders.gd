@@ -16,7 +16,7 @@ func _ready():
 	
 func normal_jump():
 	head = $HeadCollider.overlaps_body(mapref)
-	return ((below_block and not(front_block)) or (front_block and above_block) or above_head or head) and not is_ladder($AboveCollider.get_child(0).global_position)
+	return ((below_block and not(front_block)) or (front_block and above_block) or above_head or head) and not (is_ladder($AboveCollider.get_child(0).global_position) and not is_ladder($AboveHeadCollider.get_child(0).global_position))
 	
 func jump_up():
 	return front_block and !above_block and not above_head and not head or is_ladder($AboveCollider.get_child(0).global_position)
