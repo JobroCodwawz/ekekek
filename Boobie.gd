@@ -129,7 +129,7 @@ func _physics_process(delta):
 func climb(dir):
 	
 	var direction = vert_dir()
-	if get_dir(): 
+	if get_dir() or velocity.x != 0: 
 		snap_climb()
 		return
 	
