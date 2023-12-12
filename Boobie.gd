@@ -116,7 +116,7 @@ func _physics_process(delta):
 		shoot()
 		time_since_shoot = 0
 		
-	if Input.is_action_just_pressed("ui_down") and is_on_floor() and velocity.x == 0 and not on_ladder:
+	if Input.is_action_just_pressed("ui_down") and is_on_floor() and velocity.x == 0 and not on_ladder and not climbing:
 		if $Colliders.is_ladder($Colliders/FootCollider.get_child(0).global_position):
 			on_ladder = true
 			climb(1)
