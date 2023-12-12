@@ -310,5 +310,6 @@ func damage(amount):
 
 func _on_front_collider_body_entered(body):
 	if in_jump and not $Colliders.can_move():
+		print("whatttttttttttttttttttt")
 		get_target(global_position.x, last_direction)
 		snapping = true
