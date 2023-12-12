@@ -26,7 +26,8 @@ func jump_over():
 	return !(front_block or above_block or below_block) and not above_head and not head
 
 func can_move():
-	return !$FrontCollider.overlaps_body(mapref) or is_one_way($FrontCollider.get_child(0).global_position, front_block)
+	front_block = $FrontCollider.overlaps_body(mapref)
+	return !front_block or is_one_way($FrontCollider.get_child(0).global_position + get_parent().velocity.normalized()*16, front_block)
 	
 func is_one_way(pos, blockcheck):
 	if not blockcheck:
