@@ -317,6 +317,7 @@ func damage(amount):
 
 
 func _on_front_collider_body_entered(body):
+	print($Colliders.can_move())
 	if in_jump and not $Colliders.can_move() and jump_type != 1:
 		print("whatttttttttttttttttttt")
 		get_target(global_position.x, last_direction)

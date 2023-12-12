@@ -27,7 +27,7 @@ func jump_over():
 
 func can_move():
 	front_block = $FrontCollider.overlaps_body(mapref)
-	return !front_block or is_one_way($FrontCollider.get_child(0).global_position + get_parent().velocity.normalized()*16, front_block)
+	return !front_block or is_one_way($FrontCollider.get_child(0).global_position + get_parent().velocity.normalized()*6, front_block)
 	
 func is_one_way(pos, blockcheck):
 	if not blockcheck:
