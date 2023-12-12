@@ -1,17 +1,15 @@
-[gd_scene load_steps=40 format=3 uid="uid://bfx5fx6atokc6"]
+[gd_scene load_steps=37 format=3 uid="uid://bfx5fx6atokc6"]
 
 [ext_resource type="Script" path="res://Boobie.gd" id="1_ujvlj"]
 [ext_resource type="Texture2D" uid="uid://crntapjqw8nuj" path="res://Pixel_Adventure_1/Free/Main Characters/Mask Dude/Fall (32x32).png" id="1_yqvs0"]
 [ext_resource type="Texture2D" uid="uid://o1huxy3x7ao" path="res://Pixel_Adventure_1/Free/Terrain/Terrain (16x16).png" id="2_inhi0"]
 [ext_resource type="Script" path="res://PlayerColliders.gd" id="3_omefv"]
-[ext_resource type="Texture2D" uid="uid://ber11jsfy8116" path="res://Pixel_Adventure_1/Free/Main Characters/Ninja Frog/Fall (32x32).png" id="4_3t141"]
-[ext_resource type="Texture2D" uid="uid://bm62iap71043f" path="res://Pixel_Adventure_1/Free/Main Characters/Ninja Frog/Jump (32x32).png" id="4_6q5lt"]
 [ext_resource type="Texture2D" uid="uid://wnijd0w08imc" path="res://Pixel_Adventure_1/Free/Main Characters/Mask Dude/Idle (32x32).png" id="4_dkty1"]
 [ext_resource type="Texture2D" uid="uid://couhv1tfku8am" path="res://Pixel_Adventure_1/Free/Main Characters/Mask Dude/Run (32x32).png" id="5_2m8xp"]
 [ext_resource type="Texture2D" uid="uid://cmr6awh8hlcq5" path="res://Pixel_Adventure_1/Free/Main Characters/Mask Dude/Jump (32x32).png" id="5_bkasr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3gwmh"]
-size = Vector2(20, 31)
+size = Vector2(20, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i1mld"]
 size = Vector2(8, 8)
@@ -116,22 +114,6 @@ region = Rect2(352, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_3t141")
-}],
-"loop": true,
-"name": &"climb",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_6q5lt")
-}],
-"loop": true,
-"name": &"climb_idle",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_urklo")
 }, {
 "duration": 1.0,
@@ -225,9 +207,6 @@ animations = [{
 "name": &"walk",
 "speed": 10.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_06w4t"]
-size = Vector2(20, 17)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0gwjb"]
 texture = ExtResource("2_inhi0")
@@ -377,21 +356,12 @@ texture = ExtResource("2_inhi0")
 17:2/0 = 0
 17:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 17:2/0/physics_layer_0/angular_velocity = 0.0
-17:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-17:2/0/physics_layer_0/polygon_0/one_way = true
-17:2/0/custom_data_1 = true
 18:2/0 = 0
 18:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 18:2/0/physics_layer_0/angular_velocity = 0.0
-18:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-18:2/0/physics_layer_0/polygon_0/one_way = true
-18:2/0/custom_data_1 = true
 19:2/0 = 0
 19:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 19:2/0/physics_layer_0/angular_velocity = 0.0
-19:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-19:2/0/physics_layer_0/polygon_0/one_way = true
-19:2/0/custom_data_1 = true
 0:4/0 = 0
 0:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:4/0/physics_layer_0/angular_velocity = 0.0
@@ -725,8 +695,6 @@ physics_layer_0/collision_layer = 3
 physics_layer_0/collision_mask = 3
 custom_data_layer_0/name = "Breakable"
 custom_data_layer_0/type = 1
-custom_data_layer_1/name = "Climbable"
-custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_0gwjb")
 
 [node name="World" type="Node2D"]
@@ -735,8 +703,8 @@ sources/0 = SubResource("TileSetAtlasSource_0gwjb")
 position = Vector2(0, -16)
 script = ExtResource("1_ujvlj")
 
-[node name="FullCollider" type="CollisionShape2D" parent="Boobie"]
-position = Vector2(0, 0.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boobie"]
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_3gwmh")
 
 [node name="Sprite2D" type="Sprite2D" parent="Boobie"]
@@ -771,13 +739,6 @@ position = Vector2(0, -16)
 position = Vector2(0, -23)
 shape = SubResource("RectangleShape2D_i1mld")
 
-[node name="HeadCollider" type="Area2D" parent="Boobie/Colliders"]
-position = Vector2(0, -16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boobie/Colliders/HeadCollider"]
-position = Vector2(0, -10)
-shape = SubResource("RectangleShape2D_i1mld")
-
 [node name="BelowCollider" type="Area2D" parent="Boobie/Colliders"]
 position = Vector2(0, -16)
 
@@ -785,31 +746,18 @@ position = Vector2(0, -16)
 position = Vector2(24, 24)
 shape = SubResource("RectangleShape2D_i1mld")
 
-[node name="FootCollider" type="Area2D" parent="Boobie/Colliders"]
-position = Vector2(0, -16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boobie/Colliders/FootCollider"]
-position = Vector2(0, 24)
-shape = SubResource("RectangleShape2D_i1mld")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Boobie"]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_8se2j")
-animation = &"climb_idle"
+animation = &"fall"
 autoplay = "default"
-
-[node name="CrouchCollider" type="CollisionShape2D" parent="Boobie"]
-position = Vector2(0, 7.5)
-shape = SubResource("RectangleShape2D_06w4t")
-disabled = true
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
 texture_filter = 1
 tile_set = SubResource("TileSet_7jtpy")
-collision_animatable = true
 format = 2
-layer_0/tile_data = PackedInt32Array(65535, 458752, 0, 0, 458752, 0, 1, 458752, 0, 2, 458752, 0, 65534, 458752, 0, 65533, 458752, 0, 65532, 589824, 1, -4, 524288, 1, -65540, 524288, 1, -131076, 524288, 1, -5, 458752, 1, -6, 458752, 1, -65541, 458752, 1, -131078, 458752, 1, -131077, 458752, 1, -65542, 458752, 1, 65530, 458752, 1, 65531, 458752, 1, -196613, 458752, 1, -196614, 458752, 1, -196612, 524288, 1, -262149, 458752, 1, -262150, 458752, 1, -327686, 458752, 0, -327685, 458752, 0, -327684, 524288, 0, -262148, 524288, 1, -327687, 458752, 0, -262151, 458752, 1, -196615, 458752, 1, -131079, 458752, 1, -65543, 458752, 1, -7, 458752, 1, 65529, 458752, 1, 131065, 458752, 1, 131066, 458752, 1, 131067, 458752, 1, 131068, 458752, 1, 131069, 458752, 1, 131070, 458752, 1, 131071, 458752, 1, 65536, 458752, 1, 65537, 458752, 1, 65538, 458752, 1, 65539, 458752, 1, 65540, 458752, 1, 3, 458752, 0, 4, 458752, 0, 5, 458752, 0, 6, 524288, 0, 65542, 524288, 1, 65541, 458752, 1, 131078, 589824, 1, 131081, 655360, 1, 131079, 458752, 0, 131080, 458752, 0, 65545, 393216, 1, 9, 393216, 0, 10, 458752, 0, 11, 458752, 0, 12, 458752, 0, 13, 458752, 0, 14, 458752, 0, 15, 458752, 0, 16, 458752, 0, -131055, 393216, 0, -131054, 458752, 0, -131053, 458752, 0, -65519, 393216, 1, 17, 655360, 1, 18, 458752, 1, -65518, 458752, 1, 65546, 458752, 1, 131082, 458752, 1, 131083, 458752, 1, 65547, 458752, 1, 65548, 458752, 1, 131084, 458752, 1, 131085, 458752, 1, 65549, 458752, 1, 65550, 458752, 1, 65551, 458752, 1, 131087, 458752, 1, 131086, 458752, 1, 131088, 458752, 1, 65552, 458752, 1, 65553, 458752, 1, 131089, 458752, 1, 131090, 458752, 1, 65554, 458752, 1, 65555, 458752, 1, 131091, 458752, 1, 19, 458752, 1, -65517, 458752, 1, 131077, 458752, 1, 131076, 458752, 1, 131075, 458752, 1, 131074, 458752, 1, 131073, 458752, 1, 131072, 458752, 1, 196607, 458752, 1, 196606, 458752, 1, 196605, 458752, 1, 196604, 458752, 1, 196603, 458752, 1, 196602, 458752, 1, 196601, 458752, 1, 262137, 458752, 1, 262138, 458752, 1, 262139, 458752, 1, 262140, 458752, 1, 262141, 458752, 1, 262142, 458752, 1, 262143, 458752, 1, 196608, 458752, 1, 196609, 458752, 1, 196610, 458752, 1, 196611, 458752, 1, 196612, 458752, 1, 196613, 458752, 1, 196614, 458752, 1, 196615, 458752, 1, 196616, 458752, 1, 196617, 458752, 1, 196618, 458752, 1, 196619, 458752, 1, 196620, 458752, 1, 196621, 458752, 1, 196622, 458752, 1, 196623, 458752, 1, 196624, 458752, 1, 196625, 458752, 1, 196626, 458752, 1, 196627, 458752, 1, -131052, 524288, 0, -65516, 524288, 1, 20, 524288, 1, 65556, 524288, 1, 131092, 524288, 1, 196628, 524288, 1, -131049, 393216, 0, -131048, 458752, 0, -131047, 458752, 0, -131046, 524288, 0, -65512, 458752, 1, 24, 458752, 1, 65560, 458752, 1, 131096, 458752, 1, 196632, 458752, 1, 131097, 458752, 1, 65561, 458752, 1, 25, 458752, 1, -65511, 458752, 1, 196633, 458752, 1, -65513, 393216, 1, 23, 393216, 1, 65559, 393216, 1, 131095, 393216, 1, 196631, 393216, 1, -65510, 524288, 1, 26, 524288, 1, 65562, 524288, 1, 131098, 524288, 1, 196634, 524288, 1, 262164, 524288, 1, 327700, 524288, 1, 393236, 524288, 1, 458772, 524288, 1, 524308, 589824, 1, 524309, 458752, 0, 524310, 458752, 0, 524311, 458752, 0, 524312, 458752, 0, 524313, 458752, 0, 524314, 458752, 0, 327703, 393216, 2, 327706, 524288, 2, 327704, 458752, 2, 327705, 458752, 2, 262167, 393216, 1, 262170, 524288, 1, 262169, 458752, 1, 262168, 458752, 1, 393237, 1114112, 1, 393238, 1245184, 1, 262165, 1114112, 1, 262166, 1245184, 1, 131093, 1114112, 1, 131094, 1245184, 1, 22, 1245184, 1, 21, 1114112, 1, -131050, 1245184, 1, -131051, 1114112, 1, -262123, 1114112, 1, -262122, 1245184, 1, -131045, 1114112, 1, -131044, 1114112, 1, 27, 1114112, 1, 28, 1114112, 1, 131099, 1114112, 1, 131100, 1114112, 1, 262171, 1114112, 1, 262172, 1114112, 1, -262117, 1114112, 1, -262116, 1114112, 1, -393189, 1114112, 1, -393188, 1114112, 1, -131059, 1179648, 2, -262131, 1179648, 2, -393203, 1179648, 2, -524275, 1179648, 2, -131058, 1179648, 2, -262130, 1179648, 2, -393202, 1179648, 2, -524274, 1179648, 2, -65523, 1179648, 2, -65522, 1179648, 2, -196595, 1179648, 2, -196594, 1179648, 2, -327667, 1179648, 2, -327666, 1179648, 2, -458739, 1179648, 2, -458738, 1179648, 2, -196604, 1179648, 2, -262140, 1179648, 2, -327676, 1179648, 2, -393212, 1179648, 2, -458748, 1179648, 2, -524284, 1179648, 2, -196605, 1179648, 2, -262141, 1179648, 2, -327677, 1179648, 2, -393213, 1179648, 2, -458749, 1179648, 2, -524285, 1179648, 2, -131069, 1179648, 2, -131068, 1179648, 2)
+layer_0/tile_data = PackedInt32Array(65535, 458752, 0, 0, 458752, 0, 1, 458752, 0, 2, 458752, 0, 65534, 458752, 0, 65533, 458752, 0, 65532, 589824, 1, -4, 524288, 1, -65540, 524288, 1, -131076, 524288, 1, -5, 458752, 1, -6, 458752, 1, -65541, 458752, 1, -131078, 458752, 1, -131077, 458752, 1, -65542, 458752, 1, 65530, 458752, 1, 65531, 458752, 1, -196613, 458752, 1, -196614, 458752, 1, -196612, 524288, 1, -262149, 458752, 1, -262150, 458752, 1, -327686, 458752, 0, -327685, 458752, 0, -327684, 524288, 0, -262148, 524288, 1, -327687, 458752, 0, -262151, 458752, 1, -196615, 458752, 1, -131079, 458752, 1, -65543, 458752, 1, -7, 458752, 1, 65529, 458752, 1, 131065, 458752, 1, 131066, 458752, 1, 131067, 458752, 1, 131068, 458752, 1, 131069, 458752, 1, 131070, 458752, 1, 131071, 458752, 1, 65536, 458752, 1, 65537, 458752, 1, 65538, 458752, 1, 65539, 458752, 1, 65540, 458752, 1, 3, 458752, 0, 4, 458752, 0, 5, 458752, 0, 6, 524288, 0, 65542, 524288, 1, 65541, 458752, 1, 131078, 589824, 1, 131081, 655360, 1, 131079, 458752, 0, 131080, 458752, 0, 65545, 393216, 1, 9, 393216, 0, 10, 458752, 0, 11, 458752, 0, 12, 458752, 0, 13, 458752, 0, 14, 458752, 0, 15, 458752, 0, 16, 458752, 0, -131055, 393216, 0, -131054, 458752, 0, -131053, 458752, 0, -65519, 393216, 1, 17, 655360, 1, 18, 458752, 1, -65518, 458752, 1, 65546, 458752, 1, 131082, 458752, 1, 131083, 458752, 1, 65547, 458752, 1, 65548, 458752, 1, 131084, 458752, 1, 131085, 458752, 1, 65549, 458752, 1, 65550, 458752, 1, 65551, 458752, 1, 131087, 458752, 1, 131086, 458752, 1, 131088, 458752, 1, 65552, 458752, 1, 65553, 458752, 1, 131089, 458752, 1, 131090, 458752, 1, 65554, 458752, 1, 65555, 458752, 1, 131091, 458752, 1, 19, 458752, 1, -65517, 458752, 1, 131077, 458752, 1, 131076, 458752, 1, 131075, 458752, 1, 131074, 458752, 1, 131073, 458752, 1, 131072, 458752, 1, 196607, 458752, 1, 196606, 458752, 1, 196605, 458752, 1, 196604, 458752, 1, 196603, 458752, 1, 196602, 458752, 1, 196601, 458752, 1, 262137, 458752, 1, 262138, 458752, 1, 262139, 458752, 1, 262140, 458752, 1, 262141, 458752, 1, 262142, 458752, 1, 262143, 458752, 1, 196608, 458752, 1, 196609, 458752, 1, 196610, 458752, 1, 196611, 458752, 1, 196612, 458752, 1, 196613, 458752, 1, 196614, 458752, 1, 196615, 458752, 1, 196616, 458752, 1, 196617, 458752, 1, 196618, 458752, 1, 196619, 458752, 1, 196620, 458752, 1, 196621, 458752, 1, 196622, 458752, 1, 196623, 458752, 1, 196624, 458752, 1, 196625, 458752, 1, 196626, 458752, 1, 196627, 458752, 1, -131052, 524288, 0, -65516, 524288, 1, 20, 524288, 1, 65556, 524288, 1, 131092, 524288, 1, 196628, 524288, 1, -131049, 393216, 0, -131048, 458752, 0, -131047, 458752, 0, -131046, 524288, 0, -65512, 458752, 1, 24, 458752, 1, 65560, 458752, 1, 131096, 458752, 1, 196632, 458752, 1, 131097, 458752, 1, 65561, 458752, 1, 25, 458752, 1, -65511, 458752, 1, 196633, 458752, 1, -65513, 393216, 1, 23, 393216, 1, 65559, 393216, 1, 131095, 393216, 1, 196631, 393216, 1, -65510, 524288, 1, 26, 524288, 1, 65562, 524288, 1, 131098, 524288, 1, 196634, 524288, 1, 262164, 524288, 1, 327700, 524288, 1, 393236, 524288, 1, 458772, 524288, 1, 524308, 589824, 1, 524309, 458752, 0, 524310, 458752, 0, 524311, 458752, 0, 524312, 458752, 0, 524313, 458752, 0, 524314, 458752, 0, 327703, 393216, 2, 327706, 524288, 2, 327704, 458752, 2, 327705, 458752, 2, 262167, 393216, 1, 262170, 524288, 1, 262169, 458752, 1, 262168, 458752, 1, 393237, 1114112, 1, 393238, 1245184, 1, 262165, 1114112, 1, 262166, 1245184, 1, 131093, 1114112, 1, 131094, 1245184, 1, 22, 1245184, 1, 21, 1114112, 1, -131050, 1245184, 1, -131051, 1114112, 1, -262123, 1114112, 1, -262122, 1245184, 1)
 
 [connection signal="body_entered" from="Boobie/Colliders/FrontCollider" to="Boobie/Colliders" method="_on_front_collider_body_entered"]
 [connection signal="body_exited" from="Boobie/Colliders/FrontCollider" to="Boobie/Colliders" method="_on_front_collider_body_exited"]
@@ -817,9 +765,5 @@ layer_0/tile_data = PackedInt32Array(65535, 458752, 0, 0, 458752, 0, 1, 458752, 
 [connection signal="body_exited" from="Boobie/Colliders/AboveCollider" to="Boobie/Colliders" method="_on_above_collider_body_exited"]
 [connection signal="body_entered" from="Boobie/Colliders/AboveHeadCollider" to="Boobie/Colliders" method="_on_above_head_collider_body_entered"]
 [connection signal="body_exited" from="Boobie/Colliders/AboveHeadCollider" to="Boobie/Colliders" method="_on_above_head_collider_body_exited"]
-[connection signal="body_entered" from="Boobie/Colliders/HeadCollider" to="Boobie/Colliders" method="_on_head_collider_body_entered"]
-[connection signal="body_exited" from="Boobie/Colliders/HeadCollider" to="Boobie/Colliders" method="_on_head_collider_body_exited"]
 [connection signal="body_entered" from="Boobie/Colliders/BelowCollider" to="Boobie/Colliders" method="_on_below_collider_body_entered"]
 [connection signal="body_exited" from="Boobie/Colliders/BelowCollider" to="Boobie/Colliders" method="_on_below_collider_body_exited"]
-[connection signal="body_entered" from="Boobie/Colliders/FootCollider" to="Boobie/Colliders" method="_on_foot_collider_body_entered"]
-[connection signal="body_exited" from="Boobie/Colliders/FootCollider" to="Boobie/Colliders" method="_on_foot_collider_body_exited"]
