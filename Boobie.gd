@@ -96,7 +96,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_up") and is_on_floor() and velocity.x == 0 and !dir:
 		y = global_position.y
 		jump()
-	elif Input.is_action_just_pressed("ui_up"):
+	elif Input.is_action_just_pressed("ui_up") and not $Colliders.is_ladder($Colliders/HeadCollider.global_position):
 		jump_queue_countdown = jump_queue_time
 	elif is_on_floor() and velocity.x == 0 and !dir and jump_queue_countdown > 0:
 		print("QUEUED JUMP")
