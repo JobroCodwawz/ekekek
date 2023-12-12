@@ -7,6 +7,7 @@ var target_pos:int = 0
 const TILE_SIZE:int = 32
 var last_direction:int = 1
 var last_climb_dir:int = 0
+var jump_type:int = 0
 
 var snapping:bool = false
 var climb_snapping:bool = false
@@ -233,16 +234,22 @@ func jump():
 		in_jump = true
 		toggleCollider()
 		
+	if $Colliders.above_head and not $Colliders.is_one_way($Colliders/AboveHeadCollider.get_child(0).global_position, true):
+		return
+		
 	print($Colliders.normal_jump(), ", ", $Colliders.jump_up())
 	
 	
 	if $Colliders.normal_jump():
 		velocity.y = JUMP_VELOCITY
+		jump_type = 1
+		print("normal")
 	elif $Colliders.jump_over():
 		print("what")
 		velocity.y = JUMP_VELOCITY
 		velocity.x = last_direction * SPEED
 		global_position.x += last_direction
+		jump_type = 2
 		snapping = true
 		get_target(global_position.x + last_direction*TILE_SIZE, last_direction)
 		print("target: ", target_pos)
@@ -250,6 +257,7 @@ func jump():
 		print("wtf why")
 		jumping_up = true
 		velocity.y = JUMP_VELOCITY
+		jump_type = 3
 	
 	
 func jump_up():
@@ -309,7 +317,7 @@ func damage(amount):
 
 
 func _on_front_collider_body_entered(body):
-	if in_jump and not $Colliders.can_move():
+	if in_jump and not $Colliders.can_move() and jump_type != 1:
 		print("whatttttttttttttttttttt")
 		get_target(global_position.x, last_direction)
 		snapping = true
