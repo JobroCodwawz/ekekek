@@ -48,7 +48,7 @@ func _ready():
 func _physics_process(delta):
 	if in_jump and velocity.x == 0 and velocity.y == 0:
 		in_jump = false
-		if $Colliders.is_ladder($CrouchCollider.global_position) and not $Colliders.is_one_way($Colliders/FootCollider.get_child(0).global_position, true):
+		if $Colliders.is_ladder($CrouchCollider.global_position) and not ($Colliders.is_one_way($Colliders/FootCollider.get_child(0).global_position, true) and not $Colliders.is_ladder($Colliders/FootCollider.get_child(0).global_position)):
 			print("from jump")
 			on_ladder = true
 
@@ -205,6 +205,7 @@ func delay_finished():
 	return running_delay > MOVE_DELAY
 	
 func get_dir():
+	if vert_dir(): return 0
 	var direction = Input.get_axis("ui_left", "ui_right")
 	return direction
 	
